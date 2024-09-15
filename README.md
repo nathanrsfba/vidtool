@@ -85,7 +85,7 @@ directory which is deleted after processing.
 `audio` specifies the file(s) to take audio tracks from. These should be
 uncompressed `wav` files.
 
-`output` specfies the filename to save combined tracks to.
+`output` specifies the filename to save combined tracks to.
 
 `-n` will cause the audio to be normalized to 0dB before encoding the final file.
 
@@ -142,7 +142,7 @@ separate file.
 first. Specify multiple `-t` options to extract multiple tracks.
 
 `-n` will append the track number to the filename, in between the name and the
-extension. Automatically enabled if multuiple tracks specified.
+extension. Automatically enabled if multiple tracks specified.
 
 ### compgate ###
 
@@ -158,7 +158,7 @@ Compress and noise gate an audio file.
 The details of dynamic range compressors/expanders ("companders") is beyond the
 scope of this document, but the following is a basic explanation.
 
-A dynamic range compresor (or just "compressor") amplifies the quieter sections
+A dynamic range compressor (or just "compressor") amplifies the quieter sections
 of an audio input, and/or attenuates (the opposite of amplify) the louder
 sections. The end result is an audio signal which has a more "even" volume:
 There is less fluctuation between quieter and louder parts.
@@ -179,7 +179,7 @@ duration or a volume.
 
 Durations are given in seconds, which may be fractional.
 
-Volumes are given in decibels ('dB'). Decibel is a logarythmic measure of
+Volumes are given in decibels ('dB'). Decibel is a logarithmic measure of
 volume, where 0dB is the loudest possible sound that can be encoded, and
 negative infinity is complete silence. Therefore, the volume of a particular
 audio segment will be measured in negative decibels, although *changes* in
