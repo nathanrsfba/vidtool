@@ -209,9 +209,10 @@ class vtAudiomix( vtCommand ):
         """Remix the video file.
 
         This command combines the `mixdown`, `aacenc`, and `remux` commands
-        into one. If any of the programs in the pipeline returns a failure
-        code, the script is aborted with an error. Intermediate files are saved
-        to a temporary directory, which is deleted on exit.
+        (and optionally 'normalize') into one. If any of the programs in the
+        pipeline returns a failure code, the script is aborted with an error.
+        Intermediate files are saved to a temporary directory, which is deleted
+        on exit.
         """
 
         parser = ArgumentParser( prog=self.name, description=self.blurb )
@@ -222,6 +223,8 @@ class vtAudiomix( vtCommand ):
                             help='Input audio files, in WAV format' )
         parser.add_argument( 'output',
                             help='Output video file' )
+        parser.add_argument( '-n', '--normalize', action='store_true',
+                            help="Normalize audio to 0dB" )
         parser.add_argument( '-f', '--force', action='store_true',
                             help="Overwrite existing files" )
 
@@ -237,6 +240,13 @@ class vtAudiomix( vtCommand ):
             if result:
                 print( f"Error running ffmpeg.", file=stderr )
                 exit( 1 )
+            if args.normalize:
+                print( "Normalizing audio..." )
+                result = vtNormalize.execute( tmp / 'mix.wav', tmp / 'norm.wav' )
+                if result:
+                    print( f"Error running sox.", file=stderr )
+                    exit( 1 )
+                (tmp / 'norm.wav').replace( tmp / 'mix.wav' )
             print( "Encoding audio..." )
             result = vtAACEnc.execute( tmp / 'mix.wav', tmp / 'mix.aac' )
             if result:
@@ -406,6 +416,44 @@ class vtCompGate( vtCommand ):
         return result.returncode
 vtCompGate().register()
 
+class vtNormalize( vtCommand ):
+    """Amplify an audio file as much as possible without clipping."""
+
+    def __init__( self ):
+        super().__init__( 'normalize' )
+
+    def do( self, argsin ):
+        parser = ArgumentParser( prog=self.name, description=self.blurb )
+
+        parser.add_argument( 'input',
+                            help='Input audio file.' )
+        parser.add_argument( 'output',
+                            help='Output audio file.' )
+        parser.add_argument( '-l', '--level', type=Decimal, default='0',
+                            help='dB level to normalize to' )
+        parser.add_argument( '-f', '--force', action='store_true',
+                            help="Overwrite existing files" )
+
+        args = parser.parse_args( argsin )
+
+        outpath = Path( args.output )
+        checkExists( outpath, args.force )
+
+        # print( args )
+        return self.execute( args.input, args.output, args.level )
+
+    @classmethod
+    def execute( self, input, output, level=0 ):
+        """Execute sox to normalize the audio.
+
+        Return: Numeric exit code from sox
+        """
+        cmd = ['sox', '-S', input, output, 'norm']
+        if level != 0:
+            cmd.append( str( level ))
+        result = run( cmd )
+        return result.returncode
+vtNormalize().register()
 
 def checkExists( path, force=None ):
     """Check if a file already exists.

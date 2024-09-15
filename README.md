@@ -73,16 +73,21 @@ Combines the video from one file and audio from a second file into a new video f
 ### audiomix ###
 
 ```
-audiomix [-h] [-f] video audio [audio ...] output
+audiomix [-h] [-f] [-n] video audio [audio ...] output
 ```
 
-This combines the `mixdown`, `aacenc`, and `remux` tasks in a single command. Intermediate files are saved to a temporary directory which is deleted after processing.
+This combines the `mixdown`, `aacenc`, and `remux` tasks (and optionally
+`normalize`) in a single command.  Intermediate files are saved to a temporary
+directory which is deleted after processing.
 
 `video` specifies the file to take video footage from.
 
-`audio` specifies the file(s) to take audio tracks from. These should be uncompressed `wav` files.
+`audio` specifies the file(s) to take audio tracks from. These should be
+uncompressed `wav` files.
 
 `output` specfies the filename to save combined tracks to.
+
+`-n` will cause the audio to be normalized to 0dB before encoding the final file.
 
 ### scale ###
 
@@ -212,4 +217,27 @@ above the `TARGET` level.
 
 `SOFT-KNEE` specifies how much (in dB) to round hard corners in the compander
 curve.
+
+### normalize ###
+
+```
+normalize [-h] [-l LEVEL] [-f] input output
+```
+
+`normalize` amplifies `.wav` file as much as possible without causing
+distortion. This can be a useful thing to do before encoding a video file, as
+it will amplify an audio mix that's "too quiet".
+
+`LEVEL` specifies the target volume to amplify to, in dB. The audio will be
+amplified to the point that the loudest point in the entire file is exactly
+this volume. (See the `compand` command for a brief introduction to dBs). The
+default is 0, which means amplify as much as possible without distortion.
+
+A positive value will amplify the audio "more", which will make quieter
+sections even louder, but cause distortion on the louder sections. A small
+amount of this can be useful in some cases. 
+
+A negative value will amplify the audio to less than the maximum possible. This
+will not cause any distortion, but will result in a file that could safely be
+amplified further.
 
