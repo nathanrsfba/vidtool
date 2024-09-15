@@ -36,7 +36,8 @@ vidtool help [command]
 
 Displays a list of commands, or shows help for a particular command.
 
-Specifying a command shows help on that command. This is generally equivalent to calling the command with the `-h` option.
+Specifying a command shows help on that command. This is generally equivalent
+to calling the command with the `-h` option.
 
 ### mixdown ###
 
@@ -56,7 +57,9 @@ aacenc [-h] [-f] input [output]
 
 `aacenc` will encode a `wav` file into AAC format.
 
-`input` and `output` are the paths to the input and output files. If `output` is not specified, a filename will be automatically generated based on the input filename.
+`input` and `output` are the paths to the input and output files. If `output`
+is not specified, a filename will be automatically generated based on the input
+filename.
 
 ### remux ###
 
@@ -66,7 +69,9 @@ remux [-h] [-f] video audio output
 
 Combines the video from one file and audio from a second file into a new video file.
 
-`video` and `audio` specify the files to take the video and audio from. Any audio tracks in the `video` file are ignored. The audio in `audio` is expected to be encoded in the format desired for the final video file.
+`video` and `audio` specify the files to take the video and audio from. Any
+audio tracks in the `video` file are ignored. The audio in `audio` is expected
+to be encoded in the format desired for the final video file.
 
 `output` specifies the output file.
 
