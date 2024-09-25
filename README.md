@@ -13,7 +13,8 @@ vidtool command [options]
 where `command` is the task to run, and `options` are the options for the task.
 
 `vidtool` depends on `ffmpeg(1)` for most of its tools. It depends on `fdkaac(1)` for
-the `aacenc` and `audiomix` functions, and `sox(1)` for the `compand` function.
+the `aacenc` and `audiomix` functions, and `sox(1)` for the `compand` function,
+and `normalize` functions, including the `-n` option to `audiomix`.
 
 Common Options
 --------------
