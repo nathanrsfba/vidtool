@@ -393,6 +393,8 @@ class vtCompGate( vtCommand ):
                             help='Compression Threshold in dB (default: %(default)s)' )
         parser.add_argument( '-T', '--target', type=Decimal, default='-20',
                             help='Compression Target in dB (default: %(default)s)' )
+        parser.add_argument( '-n', '--normalize', action='store_true',
+                            help="Normalize audio before companding" )
 
         parser.add_argument( '-f', '--force', action='store_true',
                             help="Overwrite existing files" )
@@ -403,15 +405,17 @@ class vtCompGate( vtCommand ):
         checkExists( outpath, args.force )
 
         # print( args )
-        cmd = ['sox', '-S', args.input, args.output,
-               'compand',
+        cmd = ['sox', '-S']
+        if args.normalize:
+            cmd.append( '--norm' )
+        cmd += ['compand',
                f"{args.attack},{args.decay}",
                f"{args.soft_knee}:-inf,{args.gate-Decimal( '.1' )}," +
                f"-inf,{args.gate},{args.gate},"+
                f"{args.compress},{args.target}",
                str( args.gain ), str( args.initial_volume ), 
                str( args.delay ) ]
-        # print( cmd )
+        print( cmd )
         result = run( cmd )
         return result.returncode
 vtCompGate().register()
