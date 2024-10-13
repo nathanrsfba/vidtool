@@ -405,7 +405,8 @@ class vtCompGate( vtCommand ):
         checkExists( outpath, args.force )
 
         # print( args )
-        cmd = ['sox', '-S']
+        cmd = ['sox', '-S', args.input, args.output]
+
         if args.normalize:
             cmd.append( '--norm' )
         cmd += ['compand',
