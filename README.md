@@ -155,7 +155,7 @@ extension. Automatically enabled if multiple tracks specified.
 ```
 compgate [-h] [-a ATTACK] [-d DECAY] [-s SOFT-KNEE] [-g GAIN]
          [-i INITIAL-VOLUME] [-l DELAY] [-G GATE] [-C COMPRESS]
-         [-T TARGET] [-f]
+         [-T TARGET] [-f] [-n]
          input output
 ```
 
@@ -223,6 +223,8 @@ above the `TARGET` level.
 
 `SOFT-KNEE` specifies how much (in dB) to round hard corners in the compander
 curve.
+
+The `-n` option will normalize the audio before companding.
 
 ### normalize ###
 
