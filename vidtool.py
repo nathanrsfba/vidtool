@@ -396,6 +396,9 @@ class vtCompGate( vtCommand ):
         parser.add_argument( '-n', '--normalize', action='store_true',
                             help="Normalize audio before companding" )
 
+        parser.add_argument( '-H', '--high-pass', type=Decimal,
+                            help='High pass filter (Hz)' )
+
         parser.add_argument( '-f', '--force', action='store_true',
                             help="Overwrite existing files" )
 
@@ -404,11 +407,14 @@ class vtCompGate( vtCommand ):
         outpath = Path( args.output )
         checkExists( outpath, args.force )
 
-        # print( args )
+        #print( args )
         cmd = ['sox', '-S', args.input, args.output]
 
         if args.normalize:
             cmd.append( '--norm' )
+        if args.high_pass:
+            cmd += ['sinc', str( args.high_pass ), '-t', '1']
+
         cmd += ['compand',
                f"{args.attack},{args.decay}",
                f"{args.soft_knee}:-inf,{args.gate-Decimal( '.1' )}," +
@@ -416,6 +422,7 @@ class vtCompGate( vtCommand ):
                f"{args.compress},{args.target}",
                str( args.gain ), str( args.initial_volume ), 
                str( args.delay ) ]
+
         print( cmd )
         result = run( cmd )
         return result.returncode
