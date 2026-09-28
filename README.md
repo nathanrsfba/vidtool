@@ -155,7 +155,7 @@ extension. Automatically enabled if multiple tracks specified.
 ```
 compgate [-h] [-a ATTACK] [-d DECAY] [-s SOFT-KNEE] [-g GAIN]
          [-i INITIAL-VOLUME] [-l DELAY] [-G GATE] [-C COMPRESS]
-         [-T TARGET] [-f] [-n]
+         [-T TARGET] [-f] [-n] [-H freq]
          input output
 ```
 
@@ -225,6 +225,10 @@ above the `TARGET` level.
 curve.
 
 The `-n` option will normalize the audio before companding.
+
+The `-H` will perform a highpass filter in addition to compading. This will
+remove any audio below the given frequency. I find `-H 100` has helped rid
+me of the low-frequency noise that sometimes plagues my recordings.
 
 ### normalize ###
 
